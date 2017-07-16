@@ -27,46 +27,22 @@ export class SynthesisComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void { }
 
   getType$(): Observable<string> {
-    return this.record$
-      .filter(r => !!r)
-      .map(r => r.type);
+    return null;
   }
 
   getDuration$(): Observable<string> {
-    return this.record$
-      .filter(r => !!r)
-      .mergeMap(r => Observable.from(r.heartBeats)
-        .map(r => r.x + 1)
-        .last())
-      .map(x => `${Math.floor(x/60)}''${Math.floor(x%60)}`);
+    return null;
   }
 
   getMax$(): Observable<number> {
-    return this.record$
-      .filter(r => !!r)
-      .mergeMap(r => Observable.from(r.heartBeats)
-        .map(r => r.y)
-        .max());
+    return null;
   }
 
   getMin$(): Observable<number> {
-    return this.record$
-      .filter(r => !!r)
-      .mergeMap(r => Observable.from(r.heartBeats)
-        .map(r => r.y)
-        .min());
+    return null;
   }
 
   getAverage$(): Observable<number> {
-    return this.record$
-      .filter(r => !!r)
-      .mergeMap(r => Observable.from(r.heartBeats)
-        .map(r => r.y)
-        .reduce(average, {sum: 0, nb: 0})
-        .map(accu => accu.sum / accu.nb));
-
-    function average(accu: {sum, nb}, current): {sum, nb} {
-      return {sum: accu.sum + current, nb: accu.nb + 1};
-    }
+    return null
   }
 }
