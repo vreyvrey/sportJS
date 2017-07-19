@@ -7,6 +7,7 @@ export class Exercice {
   nbRepetion?: number;
   nbMouvement?: number;
   comment?: string;
+  selected?: boolean;
 }
 
 export const LESSON = 'LESSON';

@@ -1,32 +1,57 @@
 
-<div class="nb-exercices">Il y a #todoNombre exercices.</div>
-<div class="no-exercices">Aucun exercice dans de programme</div>
+<div class="nb-exercices" *ngIf="exercices.length > 0; else noExo">Il y a {{exercices.length}} exercices.</div>
+<ng-template #noExo>
+  <div class="no-exercices">Aucun exercice dans de programme</div>
+</ng-template>
+
+<button (click)="deleteSelectedExercices()" *ngIf="hasElementsSelected()">Supprimer tous les éléments sélectionnés</button>
 
 <table>
-  <tr class="exercice">
-    <td class="exercice-category">
-      <i class="fi flaticon-people flaticon-man-cycling flaticon-weightlifting"></i>
+  <!-- <tr class="exercice"
+      *ngFor="let exo of exercices; let i = index; let isFirst = first; let isLast = last"
+      [ngClass]="{'selected': exo.selected}"
+      (click)="selecteExercice(exo)">-->
+    <!--<td class="exercice-category" (click)="select(i)"> -->
+  <tr class="exercice"
+      *ngFor="let exo of exercices; let i = index; let isFirst = first; let isLast = last"
+      (click)="selecteExercice(exo)">
+    <td class="exercice-category" [class.l-text-danger]="exo.selected">
+      <i class="fi" [ngClass]="{
+                      'flaticon-people': isLesson(i),
+                      'flaticon-man-cycling' : isCardio(i),
+                      'flaticon-weightlifting' : isRenforcement(i)}" >
+
+      </i>
     </td>
-    <td>#todoType</td>
+    <td>{{exo.type}}</td>
     <td>
-      #todoDuree
-      à
-      #todoVitesse
-      #todoPoids
-      #todoNbRépétition
-      x
-      #todoNbMouvements
+     {{exo.duration}}
+      <span *ngIf="exo.duration && exo.speed">
+        à {{exo.speed}}
+      </span>
+     <span [hidden]="!exo.nbMouvement"><!-- équivalent ngIf ici -->
+       {{exo.weigth}}
+       {{exo.nbRepetion}}
+       x
+       {{exo.nbMouvement}}
+     </span>
     </td>
-    <td>#todoComment</td>
-    <td class="actions">
-        <div class="ordering">
-          <i class="fa fa-arrow-up" aria-hidden="true"></i>
-          <i class="fa fa-arrow-down" aria-hidden="true"></i>
-          <ng-template #emptyCell><div>&nbsp;</div></ng-template>
-        </div>
-        <div class="deleting">
-          <i class="fa fa-trash-o" aria-hidden="true"></i>
-        </div>
-    </td>
-  </tr>
+   <td>{{exo.comment}}</td>
+   <td class="actions">
+       <div class="ordering">
+         <!-- Mes réponses
+         <i class="fa fa-arrow-up" aria-hidden="true" *ngIf="!isFirst" (click)="move(i, exo, i - 1)"></i>
+         <i class="fa fa-arrow-down" aria-hidden="true" *ngIf="!isLast" (click)="move(i, exo, i + 1)"></i>-->
+
+         <i class="fa fa-arrow-up" aria-hidden="true" *ngIf="!isFirst" (click)="moveDown(i, $event)"></i>
+         <i class="fa fa-arrow-down" aria-hidden="true" *ngIf="!isLast" (click)="moveUp(i, $event)"></i>
+
+
+         <ng-template #emptyCell><div>&nbsp;</div></ng-template>
+       </div>
+       <div class="deleting" (click)="deleteExercice(i)">
+         <i class="fa fa-trash-o" aria-hidden="true"></i>
+       </div>
+   </td>
+ </tr>
 </table>
