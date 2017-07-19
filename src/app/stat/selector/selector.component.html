@@ -1,14 +1,14 @@
 
 <div class="sp-switch">
-  <div class="option">Tous</div>
-  <div class="option">Cours</div>
-  <div class="option">Cardio</div>
-  <div class="option">Renfo</div>
+  <div class="option" (click)="setSelectedCategory(null)" [ngClass]="{'active': !selectedCategory}">Tous</div>
+  <div class="option"(click)="setSelectedCategory('LESSON')" [ngClass]="{'active': selectedCategory === 'LESSON'}">Cours</div>
+  <div class="option"(click)="setSelectedCategory('CARDIO_TRAINING')" [ngClass]="{'active': selectedCategory === 'CARDIO_TRAINING'}">Cardio</div>
+  <div class="option"(click)="setSelectedCategory('REINFORCEMENT')" [ngClass]="{'active': selectedCategory === 'REINFORCEMENT'}">Renfo</div>
 </div>
 
 <div class="records">
   <div class="l-card record" (click)="selectRecord(record)" [ngClass]="{'selected': record === selectedRecord}"
-       *ngFor="let record of records$ | async">
+       *ngFor="let record of records$ | async | filterByCategory:selectedCategory">
 
     <i class="fi flaticon-people record-icon" aria-hidden="true"
        [ngClass]="{'flaticon-people': record.category === 'LESSON',
