@@ -20,9 +20,40 @@ export class StatComponent implements OnInit {
   constructor(private elementRef: ElementRef,
               private resizeGraphService: ResizeGraphService) { }
 
+
+
+
   ngOnInit() {
+    const mouseDown$ = Observable.fromEvent(this.separator.nativeElement, 'mousedown');
+
+    const mouseMove$ = Observable.fromEvent(document, 'mousemove');// sur le document ce coup ci (le mouse move se fera sur le doc)
+    //mouseMove$.subscribe(e => console.log(e));
+
+    const mouseUp$ = Observable.fromEvent(document, 'mouseup');// sur le document ce coup ci
+    //mouseUp$.subscribe(e => console.log(e));
+
+
+
+    //E1 : on écoute sur mouse down
+    //mouseDown.subscribe()
+
+    //E2 : on ne veut lancer l'observation du mouseMove QUE SI mouseDown a été lancé
+    //ATTENTION : observables d'observables => PAS BIEN : on "flatten" tout ça avec mergeMap
+    // mouseDown$.mergeMap(e => mouseMove$).subscribe()
+
+    //E3 : On n'écoute mouseMove JUSQU'A CE QUE mouseUp soit lancé
+    // mouseDown$.mergeMap(e => mouseMove$.takeUntil(mouseUp$)).subscribe()
+
+    mouseDown$.mergeMap(e => mouseMove$.takeUntil(mouseUp$)).subscribe((e: MouseEvent) => {
+      const widths = this.getBlocksWidth(e.x);
+      this.rightBlock.nativeElement.setAttribute('style', `width: ${widths.rightWidth}px;`);
+      this.leftBlock.nativeElement.setAttribute('style', `width: ${widths.leftWidth}px;`);
+
+      this.resizeGraphService.setWidth(widths.rightWidth);
+    });
 
     // TODO exo-obs
+
 
     const separatorRec = this.separator.nativeElement.getBoundingClientRect();
     const blocksWidth = this.getBlocksWidth(separatorRec.left + separatorRec.width / 2);
