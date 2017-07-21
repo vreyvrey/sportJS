@@ -4,6 +4,7 @@ import {RecordService} from "../../shared/record/record.service";
 import {Observable} from "rxjs/Observable";
 import {Record} from "../../shared/record/record";
 import {RecordStoreService} from "../record-store.service";
+import 'rxjs/add/operator/take';
 
 @Component({
   selector: 'sp-selector',
@@ -13,14 +14,16 @@ import {RecordStoreService} from "../record-store.service";
 export class SelectorComponent implements OnInit {
 
   selectedCategory: ExerciceCategory;
-  selectedRecord: Record;
   records$: Observable<Record[]>;
+
+  timestampSelectedRecord: number;
 
   constructor(private exerciceService: RecordService,
               private recordStoreService: RecordStoreService) { }
 
   ngOnInit() {
     this.records$ = this.exerciceService.findAll();
+    this.recordStoreService.getSelectedRecord$().filter(r => !!r).take(1).subscribe(r => this.timestampSelectedRecord = r.date);
   }
 
   setSelectedCategory(cat: ExerciceCategory): void {
@@ -28,7 +31,7 @@ export class SelectorComponent implements OnInit {
   }
 
   selectRecord(record: Record): void {
-    this.selectedRecord = record;
+    this.timestampSelectedRecord = record.date;
     this.recordStoreService.setNewSelectedRecord(record);
   }
 
