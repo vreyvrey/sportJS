@@ -1,0 +1,23 @@
+:host {
+  display: block;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  padding: 150px 50px;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+/deep/.action {
+  // impose du style sur les éléments qui seront dans mon composant
+}
+
+.popin {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 40px 80px;
+  background-color: #fff;
+}

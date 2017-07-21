@@ -93,7 +93,8 @@ export class ExerciceComponent implements OnInit {
     }
   }
 
-  close(): void {
+  close(event?: string): void {
+    console.log(event);
     this.exercice.emit(null);
   }
 

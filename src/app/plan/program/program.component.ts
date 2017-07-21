@@ -22,6 +22,8 @@ export class ProgramComponent implements OnInit {
   exercices: Exercice[] = [];
   isExercicePopinOpen = false;
 
+
+
   constructor(private programService: ProgramService,
               private route: ActivatedRoute,
               private router: Router,
